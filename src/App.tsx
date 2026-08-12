@@ -28,13 +28,15 @@ import { BAUSubjectPage } from './components/BAUSubjectPage';
 import { BAUSearchModal } from './components/BAUSearchModal';
 import { BAUAdminAddModal } from './components/BAUAdminAddModal';
 import { BAUFavoritesModal } from './components/BAUFavoritesModal';
+import { AgriEconomicsView } from './components/AgriEconomicsView';
 import { OFFICIAL_BAU_FACULTIES, OFFICIAL_BAU_DEPARTMENTS, OFFICIAL_BAU_COURSES } from './data/bauData';
 import { BAUFaculty, BAUDepartment, BAUCourse, BAUContext, BAUBookmark, GradeLevel, LanguageMode, SubjectCategory, TabType, UserProfile } from './types';
 import { fetchCurrentProfile } from './services/messagingApi';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Check, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('bau_hub');
+  const [activeTab, setActiveTab] = useState<TabType>('home');
   const [languageMode, setLanguageMode] = useState<LanguageMode>('bilingual');
   const [gradeLevel, setGradeLevel] = useState<GradeLevel>('university');
 
@@ -243,36 +245,42 @@ export default function App() {
 
       {/* Main Tab View */}
       <main className="flex-1 py-4 sm:py-6">
+        <ErrorBoundary>
         
-        {/* BAU Academic Selector Banner always available at top */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <BAUHomeSelector
-            faculties={faculties}
-            departments={departments}
-            courses={courses}
-            selectedContext={selectedContext}
-            onSelectContext={(ctx) => {
-              setSelectedContext(ctx);
-              if (ctx.courseId) {
-                const found = courses.find(c => c.id === ctx.courseId);
-                if (found) setSelectedCourse(found);
-              }
-            }}
-            onOpenSubjectPage={handleOpenSubjectPage}
-            onOpenAITutor={handleOpenAITutorWithCourse}
-            onOpenSearch={() => setIsSearchOpen(true)}
-            onOpenAddModal={() => setIsAddModalOpen(true)}
-            bookmarks={bookmarks.map(b => b.itemId)}
-            onToggleBookmark={handleToggleBookmark}
-            languageMode={languageMode}
+        {/* Home Page View */}
+        {activeTab === 'home' && (
+          <WelcomeHero
+            activeTab={activeTab}
+            onSelectTab={setActiveTab}
           />
-        </div>
+        )}
 
-        {/* UEI Welcome Screen & Feature Cards */}
-        <WelcomeHero
-          activeTab={activeTab}
-          onSelectTab={setActiveTab}
-        />
+        {/* Dedicated BAU Academic AI Hub Page */}
+        {activeTab === 'bau_hub' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <BAUHomeSelector
+              faculties={faculties}
+              departments={departments}
+              courses={courses}
+              selectedContext={selectedContext}
+              onSelectContext={(ctx) => {
+                setSelectedContext(ctx);
+                if (ctx.courseId) {
+                  const found = courses.find(c => c.id === ctx.courseId);
+                  if (found) setSelectedCourse(found);
+                }
+              }}
+              onOpenSubjectPage={handleOpenSubjectPage}
+              onOpenAITutor={handleOpenAITutorWithCourse}
+              onOpenSearch={() => setIsSearchOpen(true)}
+              onOpenAddModal={() => setIsAddModalOpen(true)}
+              bookmarks={bookmarks.map(b => b.itemId)}
+              onToggleBookmark={handleToggleBookmark}
+              languageMode={languageMode}
+              onBackToHome={() => setActiveTab('home')}
+            />
+          </div>
+        )}
 
         {/* Dedicated BAU Subject Page */}
         {activeTab === 'subject_page' && selectedCourse && (
@@ -284,6 +292,17 @@ export default function App() {
             isBookmarked={bookmarks.some(b => b.itemId === selectedCourse.id)}
             onToggleBookmark={() => handleToggleBookmark(selectedCourse.id, 'course', `${selectedCourse.courseCode}: ${selectedCourse.courseTitle}`)}
             onNavigateTab={setActiveTab}
+          />
+        )}
+
+        {/* Dedicated Agricultural Economics Department Explorer */}
+        {activeTab === 'agecon' && (
+          <AgriEconomicsView
+            onBack={() => setActiveTab('home')}
+            languageMode={languageMode}
+            onOpenAITutorWithTopic={(topic) => {
+              setActiveTab('tutor');
+            }}
           />
         )}
 
@@ -406,6 +425,7 @@ export default function App() {
             onNavigateTab={setActiveTab}
           />
         )}
+        </ErrorBoundary>
       </main>
 
       {/* Footer */}

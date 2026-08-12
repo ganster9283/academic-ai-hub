@@ -107,25 +107,49 @@ Provide response in JSON format matching this schema:
       { role: "user", parts: [{ text: message }] }
     ];
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            replyText: { type: Type.STRING },
-            suggestedFollowups: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            }
-          },
-          required: ["replyText"]
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: "gemini-3.6-flash",
+        contents,
+        config: {
+          systemInstruction,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              replyText: { type: Type.STRING },
+              suggestedFollowups: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING }
+              }
+            },
+            required: ["replyText"]
+          }
         }
-      }
-    });
+      });
+    } catch (primaryErr: any) {
+      console.warn("Primary model gemini-3.6-flash failed, retrying with gemini-3.6-flash:", primaryErr?.message);
+      response = await ai.models.generateContent({
+        model: "gemini-3.6-flash",
+        contents,
+        config: {
+          systemInstruction,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              replyText: { type: Type.STRING },
+              suggestedFollowups: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING }
+              }
+            },
+            required: ["replyText"]
+          }
+        }
+      });
+    }
 
     const resultText = response.text || "{}";
     const parsed = JSON.parse(resultText);
@@ -173,7 +197,7 @@ Instructions:
     const cleanBase64 = imageBase64.includes(",") ? imageBase64.split(",")[1] : imageBase64;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [
         {
           role: "user",
@@ -280,7 +304,7 @@ Ensure:
     const prompt = `Generate comprehensive, exam-oriented study notes for: ${topic || "The provided lesson content"}`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,
@@ -376,7 +400,7 @@ Requirements:
     const prompt = `Create a ${count}-question MCQ Quiz on: ${topic}`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,
@@ -469,7 +493,7 @@ Generate a structured, professional academic assignment on the requested topic:
     const prompt = `Generate an academic assignment on: "${topic}"`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,
@@ -538,7 +562,7 @@ Create a realistic, balanced, highly practical daily and weekly study timetable 
     const prompt = `Create a study planner and routine for exam preparation.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,
@@ -609,7 +633,7 @@ Instructions:
     const prompt = `Translate the following text accurately:\n"${text}"`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,
@@ -678,7 +702,7 @@ Provide:
     const prompt = `Explain simply: "${topic}" for level: ${targetLevel}`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction,

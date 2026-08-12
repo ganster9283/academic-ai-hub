@@ -15,7 +15,8 @@ import {
   Bookmark,
   BookmarkCheck,
   ShieldCheck,
-  HelpCircle
+  HelpCircle,
+  ArrowLeft
 } from 'lucide-react';
 import { BAUFaculty, BAUDepartment, BAUCourse, BAUContext, LanguageMode } from '../types';
 
@@ -32,6 +33,7 @@ interface BAUHomeSelectorProps {
   bookmarks: string[];
   onToggleBookmark: (id: string, type: 'course', title: string) => void;
   languageMode: LanguageMode;
+  onBackToHome?: () => void;
 }
 
 export const BAUHomeSelector: React.FC<BAUHomeSelectorProps> = ({
@@ -46,7 +48,8 @@ export const BAUHomeSelector: React.FC<BAUHomeSelectorProps> = ({
   onOpenAddModal,
   bookmarks,
   onToggleBookmark,
-  languageMode
+  languageMode,
+  onBackToHome
 }) => {
   const isBn = languageMode === 'bn';
 
@@ -90,6 +93,19 @@ export const BAUHomeSelector: React.FC<BAUHomeSelectorProps> = ({
   return (
     <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 rounded-3xl p-5 sm:p-7 text-white shadow-2xl relative overflow-hidden my-4 border border-indigo-500/30">
       
+      {/* Back Button if rendered in separate BAU Hub tab */}
+      {onBackToHome && (
+        <div className="mb-4 relative z-10">
+          <button
+            onClick={onBackToHome}
+            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-emerald-300 backdrop-blur-md border border-white/20 transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-emerald-300" />
+            <span>{isBn ? '← হোম পেজে ফিরে যান (Back to Home)' : '← Back to Home Page'}</span>
+          </button>
+        </div>
+      )}
+
       {/* Background Decorative Glow */}
       <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />

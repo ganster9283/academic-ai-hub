@@ -245,7 +245,7 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
   const activeConv = conversations.find(c => c.id === activeConvId);
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 h-[calc(100vh-5rem)] flex flex-col">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 h-[calc(100dvh-11rem)] md:h-[calc(100vh-8.5rem)] min-h-[520px] flex flex-col">
       
       {/* Toast Notification Banner */}
       {notificationToast && (

@@ -1,100 +1,118 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, MicOff, Volume2, VolumeX, Loader2 } from 'lucide-react';
-import { speakText, listenSpeech } from '../utils/speech';
+import { Mic, MicOff, Volume2, VolumeX, Loader2, AlertCircle, Radio } from 'lucide-react';
+import { speakText } from '../utils/speech';
+import { useSpeechToText } from '../hooks/useSpeechToText';
 
 interface VoiceInputButtonProps {
   onTranscript: (text: string) => void;
   lang?: string;
   className?: string;
+  showLangToggle?: boolean;
+  circular?: boolean;
 }
 
 export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
   onTranscript,
   lang = 'bn-BD',
-  className = ''
+  className = '',
+  showLangToggle = true,
+  circular = false
 }) => {
-  const [isListening, setIsListening] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const stopRef = React.useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => setError(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    return () => {
-      if (stopRef.current) {
-        stopRef.current();
-      }
-    };
-  }, []);
-
-  const toggleListening = () => {
-    if (isListening) {
-      if (stopRef.current) {
-        stopRef.current();
-        stopRef.current = null;
-      }
-      setIsListening(false);
-      return;
-    }
-
-    setError(null);
-    setIsListening(true);
-
-    const stopFn = listenSpeech(
-      (text) => {
-        onTranscript(text);
-        setIsListening(false);
-        stopRef.current = null;
-      },
-      (err) => {
-        setError(err);
-        setIsListening(false);
-        stopRef.current = null;
-      },
-      lang
-    );
-
-    if (stopFn) {
-      stopRef.current = stopFn;
-    } else {
-      setIsListening(false);
-    }
-  };
+  const {
+    status,
+    isListening,
+    isRequesting,
+    isProcessing,
+    interimText,
+    errorMessage,
+    currentLang,
+    toggleListening,
+    toggleLanguage
+  } = useSpeechToText({ lang, onTranscript });
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-flex items-center gap-1.5">
+      {/* Main Mic Action Button */}
       <button
         type="button"
         onClick={toggleListening}
-        className={`p-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs font-semibold ${
+        className={
+          circular
+            ? `relative shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full transition-all flex items-center justify-center font-bold cursor-pointer shadow-md ${
+                isListening
+                  ? 'bg-rose-600 text-white animate-pulse shadow-rose-300 ring-4 ring-rose-400/50 scale-105'
+                  : isRequesting || isProcessing
+                  ? 'bg-purple-100 text-purple-800 border-2 border-purple-300'
+                  : status === 'permission-denied'
+                  ? 'bg-rose-100 text-rose-700 border-2 border-rose-300 hover:bg-rose-200'
+                  : status === 'microphone-unavailable' || status === 'browser-not-supported'
+                  ? 'bg-slate-200 text-slate-500 border-2 border-slate-300 cursor-not-allowed'
+                  : 'bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-purple-300'
+              } ${className}`
+            : `p-2 sm:px-3 sm:py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs font-bold cursor-pointer shrink-0 ${
+                isListening
+                  ? 'bg-rose-600 text-white animate-pulse shadow-md shadow-rose-200 border border-rose-500'
+                  : isRequesting || isProcessing
+                  ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                  : status === 'permission-denied'
+                  ? 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'
+                  : status === 'microphone-unavailable' || status === 'browser-not-supported'
+                  ? 'bg-slate-100 text-slate-500 border border-slate-200'
+                  : 'bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200'
+              } ${className}`
+        }
+        title={
           isListening
-            ? 'bg-rose-500 text-white animate-pulse shadow-md shadow-rose-200'
-            : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200'
-        } ${className}`}
-        title={isListening ? 'ভয়েস ইনপুট থামান' : 'ভয়েস টাইপিং (কথা বলে প্রশ্ন করুন)'}
+            ? 'শুনছি... বন্ধ করতে ক্লিক করুন (Click to stop)'
+            : 'ভয়েস টাইপিং (কথা বলে প্রশ্ন লিখুন)'
+        }
       >
         {isListening ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="hidden sm:inline">শুনছি...</span>
-          </>
+          <div className="relative flex items-center justify-center">
+            <span className="absolute w-12 h-12 rounded-full bg-rose-400/30 animate-ping" />
+            <Radio className="w-5 h-5 text-white animate-bounce" />
+          </div>
+        ) : isRequesting ? (
+          <Loader2 className="w-5 h-5 animate-spin text-purple-700" />
+        ) : isProcessing ? (
+          <Loader2 className="w-5 h-5 animate-spin text-purple-700" />
+        ) : status === 'permission-denied' ? (
+          <MicOff className="w-5 h-5 text-rose-600" />
+        ) : status === 'microphone-unavailable' || status === 'browser-not-supported' ? (
+          <MicOff className="w-5 h-5 text-slate-500" />
         ) : (
-          <>
-            <Mic className="w-4 h-4" />
-            <span className="hidden sm:inline">ভয়েস</span>
-          </>
+          <Mic className="w-5 h-5 text-white" />
         )}
       </button>
 
-      {error && (
-        <span className="absolute bottom-full left-0 mb-1 z-20 text-[10px] bg-slate-900 text-white px-2 py-0.5 rounded shadow whitespace-nowrap">
-          {error}
-        </span>
+      {/* Language Toggle Chip (BN / EN) */}
+      {showLangToggle && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleLanguage();
+          }}
+          className="px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-slate-100 hover:bg-purple-100 text-purple-900 border border-slate-200 transition-all cursor-pointer shrink-0"
+          title="ভয়েস ভাষা পরিবর্তন করুন (Switch Voice Language BN/EN)"
+        >
+          {currentLang === 'bn-BD' ? '🇧🇩 BN' : '🇺🇸 EN'}
+        </button>
+      )}
+
+      {/* Interim Live Speech Transcript Floating Badge */}
+      {isListening && interimText && (
+        <div className="absolute bottom-full left-0 mb-2 z-30 pointer-events-none bg-purple-950 text-emerald-300 text-xs px-3 py-1.5 rounded-xl shadow-xl border border-purple-700 font-medium whitespace-nowrap max-w-[220px] sm:max-w-xs truncate animate-in fade-in duration-150">
+          🎤 "{interimText}"
+        </div>
+      )}
+
+      {/* Error / State Toast Alert */}
+      {errorMessage && (
+        <div className="absolute bottom-full left-0 mb-2 z-30 pointer-events-none bg-slate-900 text-rose-300 text-xs px-3 py-1.5 rounded-xl shadow-xl border border-slate-700 font-medium whitespace-nowrap flex items-center gap-1.5 animate-in fade-in duration-150">
+          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+          <span>{errorMessage}</span>
+        </div>
       )}
     </div>
   );
@@ -130,7 +148,9 @@ export const TTSButton: React.FC<TTSButtonProps> = ({
 
   useEffect(() => {
     return () => {
-      window.speechSynthesis.cancel();
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
     };
   }, []);
 
@@ -138,10 +158,10 @@ export const TTSButton: React.FC<TTSButtonProps> = ({
     <button
       type="button"
       onClick={handleTogglePlay}
-      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 cursor-pointer ${
         isPlaying
-          ? 'bg-indigo-600 text-white shadow-xs'
-          : 'bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border border-slate-200'
+          ? 'bg-purple-600 text-white shadow-xs'
+          : 'bg-slate-100 hover:bg-purple-50 text-slate-700 hover:text-purple-600 border border-slate-200'
       } ${className}`}
       title={isPlaying ? 'কথা বলা বন্ধ করুন' : 'উত্তরটি শুনুন (Listen Answer)'}
     >
@@ -159,3 +179,5 @@ export const TTSButton: React.FC<TTSButtonProps> = ({
     </button>
   );
 };
+
+

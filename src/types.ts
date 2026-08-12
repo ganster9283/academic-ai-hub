@@ -4,6 +4,7 @@ export type TabType =
   | 'home'
   | 'bau_hub'
   | 'subject_page'
+  | 'agecon'
   | 'messages'
   | 'community'
   | 'profile'
@@ -164,6 +165,7 @@ export interface ChatMessage {
   audioBase64?: string;
   suggestedFollowups?: string[];
   isError?: boolean;
+  failedQuery?: string;
 }
 
 export interface ImportantTerm {

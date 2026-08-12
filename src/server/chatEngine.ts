@@ -1506,7 +1506,7 @@ export function createChatRouter(): Router {
       const prompt = `Student Question Title: ${post.title}\nStudent Question Content: ${post.content}\n\nProvide an expert, clear academic explanation in bilingual Bengali & English suitable for Bangladesh Agricultural University students.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.6-flash',
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: {
           systemInstruction: 'You are UEI AI Tutor for Bangladesh Agricultural University. Provide structured markdown explanation with definitions and key formulas.'

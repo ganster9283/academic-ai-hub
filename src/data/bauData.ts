@@ -253,6 +253,34 @@ export const OFFICIAL_BAU_DEPARTMENTS: BAUDepartment[] = [
     sourceURL: 'https://www.bau.edu.bd/faculty/faers',
     lastVerified: '2026-01-15'
   },
+  {
+    id: 'dept_ruralsociology',
+    facultyId: 'fac_agecon',
+    code: 'SOCO',
+    nameEn: 'Department of Rural Sociology',
+    nameBn: 'গ্রামীণ সমাজবিজ্ঞান বিভাগ',
+    descriptionEn: 'Study of rural social structures, agrarian changes, rural technology adoption, gender roles, and poverty dynamics.',
+    descriptionBn: 'গ্রামীণ সামাজিক কাঠামো, কৃষি পরিবর্তন, গ্রামীণ প্রযুক্তি গ্রহণ, নারী উন্নয়ন ও দারিদ্র্য বিমোচন।',
+    programs: ['B.Sc. Ag. Econ. (Hons.)', 'MS in Rural Sociology', 'PhD'],
+    researchAreas: ['Agrarian Social Transformation', 'Climate Vulnerability & Adaptation', 'Gender in Agriculture'],
+    sourceName: 'BAU Official Academic Bulletin',
+    sourceURL: 'https://www.bau.edu.bd/faculty/faers',
+    lastVerified: '2026-01-15'
+  },
+  {
+    id: 'dept_agstats',
+    facultyId: 'fac_agecon',
+    code: 'STAT',
+    nameEn: 'Department of Agricultural Statistics',
+    nameBn: 'কৃষি পরিসংখ্যান বিভাগ',
+    descriptionEn: 'Experimental design, biostatistics, sample surveys, econometric forecasting, and agricultural data science.',
+    descriptionBn: 'কৃষি পরীক্ষণ নকশা, বায়োস্ট্যাটিস্টিক্স, নমুনা জরিপ, ইকোনোমেট্রিক পূর্বাভাস ও ডাটা সায়েন্স।',
+    programs: ['B.Sc. Ag. Econ. (Hons.)', 'MS in Agricultural Statistics', 'PhD'],
+    researchAreas: ['Crop Yield Modeling', 'Biostatistical Analysis', 'Spatial Econometrics'],
+    sourceName: 'BAU Official Academic Bulletin',
+    sourceURL: 'https://www.bau.edu.bd/faculty/faers',
+    lastVerified: '2026-01-15'
+  },
 
   // Ag Engineering
   {
@@ -630,6 +658,119 @@ export const OFFICIAL_BAU_COURSES: BAUCourse[] = [
     references: [
       'Agricultural Production Economics - David L. Debertin',
       'Economics - Samuelson and Nordhaus'
+    ],
+    sourceName: 'BAU Official Ag Economics Bulletin',
+    sourceURL: 'https://www.bau.edu.bd/faculty/faers/agecon',
+    lastVerified: '2026-01-15',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'course_agec_201',
+    facultyId: 'fac_agecon',
+    facultyNameBn: 'কৃষি অর্থনীতি ও গ্রামীণ সমাজবিজ্ঞান অনুষদ',
+    facultyNameEn: 'Faculty of Agricultural Economics & Rural Sociology',
+    departmentId: 'dept_agecon',
+    departmentNameBn: 'কৃষি অর্থনীতি বিভাগ',
+    departmentNameEn: 'Department of Agricultural Economics',
+    program: 'B.Sc. Ag. Econ. (Hons.)',
+    year: 2,
+    semester: 1,
+    courseCode: 'AGEC 201',
+    courseTitle: 'Production Economics and Farm Management',
+    courseTitleBn: 'উৎপাদন অর্থনীতি ও খামার ব্যবস্থাপনা',
+    credit: '3 (2+1)',
+    courseType: 'Combined',
+    description: 'Optimal resource allocation, cost relationships (TVC, TFC, MC, AC), farm budgeting, risk management, and profit maximization in cropping systems.',
+    descriptionBn: 'খামার সম্পদের সর্বোচ্চ সঠিক ব্যবহার, ব্যয় বিশ্লেষণ (টিভিসি, টিএফসি, এমসি, এসি), ফার্ম বাজেটিং ও লাভ সর্বোচ্চকরণ।',
+    topics: [
+      'Principles of Factor-Factor & Product-Product Relationships',
+      'Cost Concepts: Fixed vs Variable Cost, Opportunity Cost',
+      'Farm Budgeting: Complete vs Partial Budgeting, Enterprise Budgeting',
+      'Risk and Uncertainty in Agricultural Decision Making',
+      'Linear Programming Application in Farm Planning'
+    ],
+    practicalTopics: [
+      'Preparation of Enterprise Budget for Rice, Maize, and Dairy Farming',
+      'Partial Budgeting analysis for adopting new agricultural technology',
+      'Field survey & Farm record-keeping book analysis at BAU Farm'
+    ],
+    references: [
+      'Farm Management Economics - Heady and Jensen',
+      'Production Economics - BAU FAERS Press'
+    ],
+    sourceName: 'BAU Official Ag Economics Bulletin',
+    sourceURL: 'https://www.bau.edu.bd/faculty/faers/agecon',
+    lastVerified: '2026-01-15',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'course_abm_202',
+    facultyId: 'fac_agecon',
+    facultyNameBn: 'কৃষি অর্থনীতি ও গ্রামীণ সমাজবিজ্ঞান অনুষদ',
+    facultyNameEn: 'Faculty of Agricultural Economics & Rural Sociology',
+    departmentId: 'dept_agribusiness',
+    departmentNameBn: 'এগ্রিবিজনেস অ্যান্ড মার্কেটিং বিভাগ',
+    departmentNameEn: 'Department of Agribusiness & Marketing',
+    program: 'B.Sc. Ag. Econ. (Hons.)',
+    year: 2,
+    semester: 2,
+    courseCode: 'ABM 202',
+    courseTitle: 'Agribusiness Supply Chain & Marketing',
+    courseTitleBn: 'এগ্রিবিজনেস সাপ্লাই চেইন ও মার্কেটিং',
+    credit: '3 (2+1)',
+    courseType: 'Combined',
+    description: 'Marketing channels of agricultural produce, market intermediaries, price spreads, marketing margins, and value-chain development in Bangladesh.',
+    descriptionBn: 'কৃষি পণ্যের বিপণন চ্যানেল, মধ্যস্বত্বভোগী, মার্কেটিং মার্জিন ও প্রক্রিয়াজাতকরণ সাপ্লাই চেইন উন্নয়ন।',
+    topics: [
+      'Agricultural Marketing Functions: Exchange, Physical, Facilitating',
+      'Marketing Channels & Intermediaries (Faria, Bepari, Aratdar, Wholesaler, Retailer)',
+      'Marketing Margin, Farmer\'s Share, and Price Spread Calculation',
+      'Post-harvest losses and Cold Chain Logistics in perishable crops',
+      'E-commerce & Digital Platforms in Bangladesh Agri-market'
+    ],
+    practicalTopics: [
+      'Market Margin & Price Spread analysis for Mymensingh Wholesale Vegetable Market',
+      'Value chain mapping for poultry broiler meat in Bangladesh',
+      'Preparation of a Feasibility Report for an Agri-start-up'
+    ],
+    references: [
+      'Marketing of Agricultural Products - Richard L. Kohls',
+      'Agribusiness Management - Freddie Barnard'
+    ],
+    sourceName: 'BAU Official Ag Economics Bulletin',
+    sourceURL: 'https://www.bau.edu.bd/faculty/faers/abm',
+    lastVerified: '2026-01-15',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'course_agec_301',
+    facultyId: 'fac_agecon',
+    facultyNameBn: 'কৃষি অর্থনীতি ও গ্রামীণ সমাজবিজ্ঞান অনুষদ',
+    facultyNameEn: 'Faculty of Agricultural Economics & Rural Sociology',
+    departmentId: 'dept_agecon',
+    departmentNameBn: 'কৃষি অর্থনীতি বিভাগ',
+    departmentNameEn: 'Department of Agricultural Economics',
+    program: 'B.Sc. Ag. Econ. (Hons.)',
+    year: 3,
+    semester: 1,
+    courseCode: 'AGEC 301',
+    courseTitle: 'Agricultural Trade & Food Security Policy',
+    courseTitleBn: 'কৃষি বাণিজ্য ও খাদ্য নিরাপত্তা নীতি',
+    credit: '3 (3+0)',
+    courseType: 'Theoretical',
+    description: 'Macroeconomics of food security, WTO Agreement on Agriculture, agricultural subsidies, import-export trade, and climate change impacts.',
+    descriptionBn: 'খাদ্য নিরাপত্তার ম্যাক্রো-ইকোনমিক্স, ডব্লিউটিও চুক্তি, কৃষি ভতুর্কি, আমদানি-রপ্তানি নীতি এবং জলবায়ু পরিবর্তনের প্রভাব।',
+    topics: [
+      'Dimensions of Food Security: Availability, Access, Utilization, Stability',
+      'WTO Agreement on Agriculture (AoA): Green Box, Amber Box, Blue Box subsidies',
+      'Agricultural Tariffs, Non-Tariff Barriers, and Export Incentives',
+      'National Food and Nutrition Policy of Bangladesh',
+      'Impact of Inflation and Exchange Rate Fluctuations on Agri-Inputs'
+    ],
+    practicalTopics: [],
+    references: [
+      'Food Security and Trade - IFPRI Policy Guidelines',
+      'Macroeconomics of Development - Todaro and Smith'
     ],
     sourceName: 'BAU Official Ag Economics Bulletin',
     sourceURL: 'https://www.bau.edu.bd/faculty/faers/agecon',
