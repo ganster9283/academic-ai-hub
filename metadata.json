@@ -1,0 +1,6 @@
+{
+  "name": "BAU Academic AI Hub & UEI",
+  "description": "Complete Academic AI Hub for Bangladesh Agricultural University (BAU) featuring Faculty & Department Database, Verified Teacher Community Forum, Real-Time Messaging, AI Tutor, Snap & Solve, Notes Generator, and Admin Moderation.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
